@@ -1,20 +1,34 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export async function createTask(formData: FormData) {
     const title = formData.get("title") as string;
     if (!title || title.trim() === "") return;
 
-    await prisma.task.create({
-        data: { title },
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) return;
+
+    const user = await (prisma as any).user.findUnique({
+        where: { email: session.user.email },
+    });
+
+    if (!user) return;
+
+    await (prisma as any).task.create({
+        data: { 
+            title,
+            userId: user.id,
+        },
     });
 
     revalidatePath("/");
 }
 
 export async function toggleTask(id: string, currentStatus: boolean) {
-    await prisma.task.update({
+    await (prisma as any).task.update({
         where: { id },
         data: { done: !currentStatus },
     });
@@ -23,10 +37,9 @@ export async function toggleTask(id: string, currentStatus: boolean) {
 }
 
 export async function deleteTask(id: string) {
-    await prisma.task.delete({
+    await (prisma as any).task.delete({
         where: { id },
     });
 
     revalidatePath("/");
 }
-    
