@@ -32,20 +32,27 @@ export default async function Home() {
           <LogoutButton />
         </div>
         <div className="bg-white rounded-2xl shadow-md p-6 mb-6">
-          <form action={createTask} className="flex gap-3">
-            <input
-               type="text"
-               name="title"
-               placeholder="Add a new task..."
-               required
-               className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+          <form action={createTask} className="flex flex-col gap-3">
+              <input
+                type="text"
+                name="title"
+                placeholder="Add a new task..."
+                required
+                className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
               />
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Add
-              </button>
+              <div className="flex gap-3">
+                <input
+                  type="date"
+                  name="dueDate"
+                  className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Add
+                </button>
+              </div>
           </form>
         </div>
 

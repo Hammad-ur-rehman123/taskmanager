@@ -6,6 +6,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export async function createTask(formData: FormData) {
     const title = formData.get("title") as string;
+    const dueDate= formData.get("dueDate") as string;
     if (!title || title.trim() === "") return;
 
     const session = await getServerSession(authOptions);
@@ -21,6 +22,7 @@ export async function createTask(formData: FormData) {
         data: { 
             title,
             userId: user.id,
+            dueDate: dueDate && dueDate.trim() !== "" ? new Date(dueDate) : null,
         },
     });
 
